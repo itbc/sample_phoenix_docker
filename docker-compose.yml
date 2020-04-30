@@ -1,0 +1,28 @@
+  version: '3'
+
+  services:
+    PostgreSQL:
+      image: postgres
+      container_name: postgres
+      ports:
+        - 5432:5432
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      hostname: postgres
+      restart: always
+      user: root
+
+    elixir:
+      build: .
+      ports:
+        - 4000:4000
+      container_name: elixir
+      volumes:
+        - .:/workspace
+      depends_on:
+        - PostgreSQL
+      command: /bin/bash
+      tty: true
+      stdin_open: true
